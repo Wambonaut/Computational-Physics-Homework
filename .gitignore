@@ -1,3 +1,12 @@
 # vs code
 *.vscode
 *__pycache__
+
+# Output folders
+sols_ja/pset2/figures/*
+sols_ja/pset2/out/*
+
+# LaTeX output files
+*.aux
+*.log
+_minted-solution
