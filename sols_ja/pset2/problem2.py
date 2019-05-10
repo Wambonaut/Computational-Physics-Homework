@@ -38,7 +38,7 @@ def body3traj(x0, xd0, m, dt, N):
   for i in range(1, N):
     printProgressBar(i, N - 1, suffix='Complete', prefix='Progress')
 
-    t[i] = t[i - 1] + dtos
+    t[i] = t[i - 1] + dt
 
     # Runge kutta for the two first order equations for each body
     k1 = xdd(x[:, i - 1], m)
