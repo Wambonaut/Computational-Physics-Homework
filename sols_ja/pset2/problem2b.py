@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 import random as rng
 from numpy import abs, log10
 from problem2 import body3traj, body3mutDist, body3minDistTimes, body3totErg
@@ -20,6 +21,10 @@ xd0 = np.array([
 # Place the origin at the center of mass
 X = np.sum([m[i] * x0[i] for i in range(3)], axis=0) / np.sum(m)
 x0 -= X
+
+# Check for out path
+if not os.path.exists('sols_ja/pset2/figures'):
+  os.makedirs('sols_ja/pset2/figures')
 
 for N in [100, 10000, 100000, 1000000]:
   dt = 10.0 / N

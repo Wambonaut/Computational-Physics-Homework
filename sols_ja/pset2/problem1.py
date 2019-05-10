@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from numpy import exp
 
 # General implementation of 4th order runge kutta algorithm
@@ -44,6 +45,8 @@ for N in [5, 6, 7, 10, 12]:
   ax1.semilogy(t, u)
   ax2.plot(t, u)
 
+if not os.path.exists('sols_ja/pset2/figures/'):
+  os.makedirs('sols_ja/pset2/figures')
 fig1.savefig('sols_ja/pset2/figures/fig1_1.png', papertype='a4',
   orientation='landscape', bbox_inches='tight', format='png')
 fig2.savefig('sols_ja/pset2/figures/fig1_2.png', papertype='a4',

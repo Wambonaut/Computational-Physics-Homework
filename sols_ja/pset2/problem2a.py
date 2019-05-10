@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 import random as rng
 from problem2 import body3traj
 
@@ -27,6 +28,8 @@ for i in range(len(axes)):
   axes[i].axis('equal')
   axes[i].plot(x[i, :, 0], x[i, :, 1], color=('C' + str(i)))
 
+if not os.path.exists('sols_ja/pset2/figures'):
+  os.makedirs('sols_ja/pset2/figures')
 fig.savefig('sols_ja/pset2/figures/fig2a_1.png', papertype='a4',
   orientation='landscape', bbox_inches='tight', format='png')
 

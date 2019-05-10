@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from numpy import sqrt, dot
 from numpy.linalg import norm
 
@@ -37,7 +38,7 @@ def body3traj(x0, xd0, m, dt, N):
   for i in range(1, N):
     printProgressBar(i, N - 1, suffix='Complete', prefix='Progress')
 
-    t[i] = t[i - 1] + dt
+    t[i] = t[i - 1] + dtos
 
     # Runge kutta for the two first order equations for each body
     k1 = xdd(x[:, i - 1], m)
@@ -68,6 +69,8 @@ def body3minDistTimes(r, t, outPath=None):
         inds = np.append(inds, i)
   
   if outPath != None:
+    if not os.path.exists(os.path.dirname(outPath)):
+      os.makedirs(os.path.dirname(outPath))
     with open(outPath, 'w') as out:
       for i in range(len(inds)):
         print(inds[i], tMinDist[i], sep='  ', file=out)
