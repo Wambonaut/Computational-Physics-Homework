@@ -1,0 +1,37 @@
+% !TEX program = lualatex
+% !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%OUTDIR% "%DOC%"
+
+\documentclass[12pt, a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[left=2cm, top=2cm, right=2cm, bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[newfloat, outputdir=out_tex]{minted}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\newcounter{lstNoteCounter}
+\SetupFloatingEnvironment{listing}{name=Source code}
+
+
+\begin{document}
+
+\centerline{\Huge\scshape Computational physics}
+\vspace*{0.5cm}
+\hrule
+\vspace*{0.5cm}
+\centerline{Jona Ackerschott, Julian Mayr}
+\vspace*{1cm}
+\centerline{\Large\bfseries Problem set 3}
+\vspace*{0.5cm}
+
+\section*{Problem 1}
+
+\section*{Problem 2}
+
+
+\end{document}
