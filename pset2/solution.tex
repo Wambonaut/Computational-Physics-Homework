@@ -1,0 +1,175 @@
+% !TEX program = lualatex
+% !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error --shell-escape "%DOC%"
+
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{caption}
+% \usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage[left=2cm,top=2cm,right=2cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+
+\graphicspath{../figures}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\newcounter{lstNoteCounter}
+\SetupFloatingEnvironment{listing}{name=Source code}
+
+
+\begin{document}
+
+\centerline{\Huge\scshape Computational physics}
+\vspace*{0.5cm}
+\hrule
+\vspace*{0.5cm}
+\centerline{Jona Ackerschott, Julian Mayr}
+\vspace*{1cm}
+\centerline{\Large\bfseries Problem set 2}
+\vspace*{0.5cm}
+
+\section*{Problem 1}
+
+\begin{code}
+	\inputminted{python}{../problem1.py}
+	\captionof{listing}{problem1.py}
+\end{code}
+
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{../figures/fig1_1.png}
+	\caption{Semi logarithmic plot of the analytical (blue) and the numerical solutions. For the numerical 	solutions (orange, green, red, purple and brown), the step sizes $2.0, 1.7, 1.4, 1.0$ and $0.8$ where 		used.}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=\columnwidth]{../figures/fig1_2.png}
+	\caption{Normal plot of the analytical (blue) and the numerical solutions from figure 1.}
+\end{figure}
+
+\newpage
+
+\noindent
+From figure 1 one can see, that the slopes of the numerical solutions are converging pretty fast to the slope of the analytical solution and that with relatively large step sizes. The purple solution is already, at least visually, a decent approximation of the blue curve (at the points where it is not interpolated) with a step size of $1.0$. So one can see that the 4th order runge-kutta method seems to produce very good results in practice.
+
+\section*{Problem 2}
+\begin{code}
+	\inputminted{python}{../problem2.py}
+	\captionof{listing}{problem2.py}
+\end{code}
+
+\begin{enumerate}
+	\item[(a)]
+		\begin{code}
+			\inputminted{python}{../problem2a.py}
+			\captionof{listing}{problem2a.py}
+		\end{code}
+
+		\begin{figure}[h]
+			\includegraphics[width=\textwidth]{../figures/fig2a_1.png}
+			\caption{Trajectory plot for the 3 bodys, with the given initial conditions. The 3 Graphs lie perfectly on top of each other, so that they are drawn separately.}
+		\end{figure}
+
+	\item[(b)]
+		\begin{code}
+			\inputminted{python}{../problem2b.py}
+			\captionof{listing}{problem2b.py}
+		\end{code}
+		
+		As one can see from the figures 4-7, the behaviour of this system is chaotic, which means in this case, that the trajectories are very different even for the 4th order runge kutta method with very small step sizes. The first \glqq good\grqq{} result one gets in this problem, is, in terms of the energy uncertainty, with a step size of $\Delta t = 0.00001$, which yields a first maximal energy uncertainty which is strictly less than one (cf. figure 7).\\
+		If one takes a look at the times of the first 5 encounters of the 3 bodys, one gets the following results from data 1-4 for $\Delta t = 0.1, 0.001, 0.0001$ and $0.00001$:
+		
+		\begin{center}
+			\begin{tabular}{ c | c | c | c | c }
+				$n$ & 0.1 & 0.001 & 0.0001 & 0.00001 \\
+				\hline
+				1 & 1.80000 & 1.82800 & 1.82760 & 1.82764 \\
+				2 & 1.80000 & 1.88000 & 1.88030 & 1.88033 \\
+				3 & 1.90000 & 1.88300 & 2.99670 & 3.11570 \\
+				4 &         & 1.88400 & 3.00800 & 3.20262 \\
+				5 &         & 1.89800 & 3.02040 & 3.97313 \\
+			\end{tabular}
+			\captionof{table}{Time points of the first 5 encounters (minimal distance) of the 3 bodys, for different values of $\Delta t$}
+		\end{center}
+		
+		So as one can see, the first decimal place of the time points seems to be accurate (maybe except for the last value) at $\Delta t = 0.0001$. So with $\Delta t = 0.00001$ one should get a pretty good guess for these values, especially the first few. But to determine this values accurately to a few decimal places one probably needs a step size which is some orders of magnitude below that. Unfortunately, to do this with the current code in hand is rather impractical, because the computation time for $\Delta t = 0.00001$ is already at 15 Minutes. So if one would take theses further computations seriously, he should think about using C/C++. However, the use of C/C++ would certainly lead to another problem regarding the dimensionality of the problem. This is not a problem in python, because the numpy package can handle mutlidimensional arrays pretty well, which would certainly be a nightmare in C/C++, if one thinks about memory handling.
+		
+		\begin{figure}[H]
+			\begin{center}
+				\begin{minipage}[c]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_1.png}
+					\includegraphics[width=\textwidth]{../figures/fig2b_3.png}
+				\end{minipage}
+				\begin{minipage}[t]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_2.png}
+				\end{minipage}
+			\end{center}
+			\caption{Plots of the trajectories (body 1: blue, body 2: orange, body 3: green), mutual distances (body 1-2: blue, body 2-3: orange, body 3-1: green) and the error $\left| 1 - \frac{E}{E_0} \right|$ of the total Energy $E$, the last two as a function of time, for $\Delta t = 0.1$.}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\begin{center}
+				\begin{minipage}[c]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_4.png}
+					\includegraphics[width=\textwidth]{../figures/fig2b_6.png}
+				\end{minipage}
+				\begin{minipage}[t]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_5.png}
+				\end{minipage}
+			\end{center}
+			\caption{Plots of the trajectories (body 1: blue, body 2: orange, body 3: green), mutual distances (body 1-2: blue, body 2-3: orange, body 3-1: green) and the error $\left| 1 - \frac{E}{E_0} \right|$ of the total Energy $E$, the last two as a function of time, for $\Delta t = 0.001$.}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\begin{center}
+				\begin{minipage}[c]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_7.png}
+					\includegraphics[width=\textwidth]{../figures/fig2b_9.png}
+				\end{minipage}
+				\begin{minipage}[t]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_8.png}
+				\end{minipage}
+			\end{center}
+			\caption{Plots of the trajectories (body 1: blue, body 2: orange, body 3: green), mutual distances (body 1-2: blue, body 2-3: orange, body 3-1: green) and the error $\left| 1 - \frac{E}{E_0} \right|$ of the total Energy $E$, the last two as a function of time, for $\Delta t = 0.0001$}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\begin{center}
+				\begin{minipage}[c]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_10.png}
+					\includegraphics[width=\textwidth]{../figures/fig2b_12.png}
+				\end{minipage}
+				\begin{minipage}[t]{0.49\textwidth}
+					\includegraphics[width=\textwidth]{../figures/fig2b_11.png}
+				\end{minipage}
+			\end{center}
+			\caption{Plots of the trajectories (body 1: blue, body 2: orange, body 3: green), mutual distances (body 1-2: blue, body 2-3: orange, body 3-1: green) and the error $\left| 1 - \frac{E}{E_0} \right|$ of the total Energy $E$, the last two as a function of time, for $\Delta t = 0.00001$}
+		\end{figure}
+		
+		\newpage		
+		\SetupFloatingEnvironment{listing}{name=Data}	
+		
+		\begin{code}
+			\inputminted{text}{../out/minDistTimes_1.txt}
+			\captionof*{listing}{Data 1: Time points with minimal mutual distances of the bodys, for $\Delta t = 0.1$. The body is given by the index.}
+		\end{code}
+		\begin{code}
+			\inputminted{text}{../out/minDistTimes_2.txt}
+			\captionof*{listing}{Data 2: Time points with minimal mutual distances of the bodys, for $\Delta t = 0.001$. The body is given by the index.}
+		\end{code}
+		\begin{code}
+			\inputminted{text}{../out/minDistTimes_3.txt}
+			\captionof*{listing}{Data 3: Time points with minimal mutual distances of the bodys, for $\Delta t = 0.0001$. The body is given by the index.}
+		\end{code}
+		
+		\newpage	
+		
+		\begin{code}
+			\inputminted{text}{../out/minDistTimes_4.txt}
+			\captionof*{listing}{Data 4: Time points with minimal mutual distances of the bodys, for $\Delta t = 0.00001$. The body is given by the index.}
+		\end{code}
+
+\end{enumerate}
+
+\end{document}
