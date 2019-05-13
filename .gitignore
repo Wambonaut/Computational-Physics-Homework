@@ -3,10 +3,6 @@
 *__pycache__
 
 # Output folders
-sols_ja/pset2/figures/*
-sols_ja/pset2/out/*
-
-# LaTeX output files
-*.aux
-*.log
-_minted-solution
+*figures
+*out
+*out_tex
