@@ -6,3 +6,8 @@
 *figures
 *out
 *out_tex
+
+#texstudio stuff
+*.log
+*.aux
+*.synctex.gz
