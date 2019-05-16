@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May 14 23:46:36 2019
 
-@author: wambo
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import eval_hermite
