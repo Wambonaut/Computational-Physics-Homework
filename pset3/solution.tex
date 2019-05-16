@@ -60,10 +60,11 @@
   
   
   The numeric solution appears to be very exact, although for large z (not shown in the figure), while it should asymptotically approach zero, the solution will switch sign, and rapidly approach infinity once it does. Because of this, the bounds of the function have to be chosen carefully.
+
   \section*{Problem 2}
   To rewrite the schrödinger equation
 
-  \begin{align} 
+  \begin{align}
     \psi''(z) + \frac{2 m}{\hbar^2} (E - V(z)) \psi(z) = 0
   \end{align}
 
@@ -85,6 +86,7 @@
     \label{eq_schrd}
   \end{align}
  
+
   \noindent
   Where $\frac{2 m z_0^2}{\hbar^2} = \frac{1}{E_0}$ was used. This equation is now independent of the units and can be solved numerically with the numerov algorithm. For this one first has to specify the initial conditions. From $V(\eta) = \infty$ for $\eta < 0$ one first can conclude that $\psi(0) = 0$. Second, here $\psi'(0) = 1$ is chosen. In the process the second initial condition is basically arbitrary, because it leads to the same eigenvalues of the energy, and would be set later by the normalization of the wave function. So the specific choice of this value does not matter for this problem, thus it is chosen to be one. Another thing to note here, is that this is probably not the easiest choice for the initial conditions of the numerov algorithm, because one has to first compute the value of $\psi(\Delta t)$, with the step size $\Delta t$ in order to use it (this is done by $\psi(\Delta t) \approx \psi(0) + \psi'(0) \Delta t$), but the derivative at the starting point is the typical choice for an initial condition of an ODE and in this case far more natural and intuitive than to just specify $\psi(\Delta t)$ (It also makes the solution independent of the step size).\\
   Now, with this choices for the initial conditions, one can solve this ODE with the numerov algorithm (where $k(\eta) = \mathcal{E} - \eta$) and the solution will only depend on $\mathcal{E}$. For that, $\Delta t = 0.001$ and $N = 10000$ are chosen. \\
@@ -116,6 +118,7 @@
 
   \subsubsection*{Source Code}
   
+
   \begin{code}
     \inputminted{python}{numerov.py}
     \captionof{listing}{numerov.py}
