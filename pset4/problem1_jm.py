@@ -31,7 +31,6 @@ N=np.array([[1e-6, 0.5,0.5],[0.5,0.,0.25]])
 A=upper_diag(N)
 def unit_from_upper_diag(M):
     for i in range(1,len(M[:,0])):
-        print(M)
         M[-i-1]-=M[-i-1,-i-1]*M[-i]
     return M
 print(unit_from_upper_diag(A))
