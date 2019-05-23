@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May 14 23:46:36 2019
 
-@author: wambo
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import eval_hermite
@@ -28,12 +24,17 @@ def numerov(x_0, y_0, ym1, k, dx, N):
         print(y[i])
     return x, y
 
-n=7
-e=n+0.5
-x, y=numerov(0, 0.01, 0, lambda x: (2*e-x**2), 0.001, (n+2)*1000)
-y_anal=eval_hermite(n,x)/(2**n*np.math.factorial(n)*np.sqrt(np.pi))**0.5*np.exp(-x**2/2)
-y_anal=y_anal*y[50]/y_anal[50] #norm the analytical solution
-plt.plot(x,y, label="Numerical Solution")
-plt.plot(x, y_anal, label="Analytical Solution")
+plt.figure(figsize=(7,20))
+for n in range(0,9):
+    e=n+0.5
+    if n%2==1:
+        x, y=numerov(0, 0.01, 0, lambda x: (2*e-x**2), 0.001, (n+2)*900)
+    else:
+        x, y=numerov(0, 1-0.001**2*e, 1, lambda x: (2*e-x**2), 0.001, (n+2)*800)
+    y_anal=eval_hermite(n,x)/(2**n*np.math.factorial(n)*np.sqrt(np.pi))**0.5*np.exp(-x**2/2)
+    y_anal=y_anal*y[50]/y_anal[50] #norm the analytical solution
+    plt.subplot(911+n)
+    plt.plot(x,y, label="Numerical Solution")
+    plt.plot(x, y_anal, label="Analytical Solution")
 plt.legend()
 plt.show()

@@ -12,6 +12,7 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[newfloat, outputdir=out_tex]{minted}
+\usepackage{pgf}
 
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \newcounter{lstNoteCounter}
@@ -20,18 +21,119 @@
 
 \begin{document}
 
-\centerline{\Huge\scshape Computational physics}
-\vspace*{0.5cm}
-\hrule
-\vspace*{0.5cm}
-\centerline{Jona Ackerschott, Julian Mayr}
-\vspace*{1cm}
-\centerline{\Large\bfseries Problem set 3}
-\vspace*{0.5cm}
+  \centerline{\Huge\scshape Computational physics}
+  \vspace*{0.5cm}
+  \hrule
+  \vspace*{0.5cm}
+  \centerline{Jona Ackerschott, Julian Mayr}
+  \vspace*{1cm}
+  \centerline{\Large\bfseries Problem set 3}
+  \vspace*{0.5cm}
 
-\section*{Problem 1}
+  \section*{Problem 1}
+  The schrödinger equation
+  
+  \begin{align} 
+  \psi''(z) + \frac{2 m}{\hbar^2} (E - V(z)) \psi(z) = 0
+  \end{align}
+  \noindent
+  with $V(z)=mz^2$ can be rewritten in dimensionless units as
+  \begin{align} 
+  \psi''(z) + (2\epsilon-z^2) \psi(z) = 0
+  \end{align}
+  \noindent
+  where $n=\epsilon-0.5$ is the eigenvalue of the calculated state in case n is natural. With starting values $\psi(0)=a$ and $\psi(h)=a-h^2k_0\psi(0)/2$ for even n and $\psi(0)=0$ and $\psi(h)=a$ for odd ones, we can then compare the numerically solved equation to the analytical solution:
+  
+  \begin{align}
+  \psi(x)=\frac{H_n(x)}{\sqrt{2^nn!\sqrt{\pi}}}\exp\left(-\frac{x^2}{2}\right)
+  \end{align}
+  \noindent
+  where $H_n(x)$ are the Hermite polynomials. Plotting the solutions against each other for different n gives us:\\
+    
+  \begin{figure}
+  	\scalebox{0.7}{
+  		\input{figures/fig1_1.pgf}}
+  	\caption{Numerical vs analytical solution of the harmonic oscillator schrödinger equation with $\Delta t=0.001$. The analytical solution is normalized to match the numerical one in order of magnitude.}
+  	\label{fig1}
+  \end{figure}
+  \newpage
+  
+  
+  The numeric solution appears to be very exact, although for large z (not shown in the figure), while it should asymptotically approach zero, the solution will switch sign, and rapidly approach infinity once it does. Because of this, the bounds of the function have to be chosen carefully.
 
-\section*{Problem 2}
+  \section*{Problem 2}
+  To rewrite the schrödinger equation
 
+  \begin{align}
+    \psi''(z) + \frac{2 m}{\hbar^2} (E - V(z)) \psi(z) = 0
+  \end{align}
+
+  \noindent
+  with the potential $V(z) = m g z$, in a more mathematical manner, the quantities
+
+  \begin{align}
+    z_0 := \sqrt[3]{\frac{\hbar^2}{2 m^2 g}} \qquad E_0 := \sqrt[3]{\frac{m g^2 \hbar^2}{2}}
+  \end{align}
+
+  \noindent
+  with the dimensions length and energy are defined, such that one can substitute $z = z_0 \eta$ and gets the following
+
+  \begin{align}
+    & \frac{1}{z_0^2} \psi''(\eta) + \left(\frac{2 m}{\hbar^2} E - \frac{2 m^2 g}{\hbar^2} z_0 \eta \right) \psi(\eta) = 0
+    \nonumber \\
+    \Leftrightarrow \quad & \psi''(\eta) + \left( \frac{2 m}{\hbar^2} z_0^2 E - \frac{2 m^2 g}{\hbar^2} z_0^3 \eta \right) \psi(\eta) = 0 \nonumber \\
+    \Leftrightarrow \quad & \psi''(\eta) + \left( \mathcal{E} - \eta \right) \psi(\eta) = 0
+    \label{eq_schrd}
+  \end{align}
+ 
+
+  \noindent
+  Where $\frac{2 m z_0^2}{\hbar^2} = \frac{1}{E_0}$ was used. This equation is now independent of the units and can be solved numerically with the numerov algorithm. For this one first has to specify the initial conditions. From $V(\eta) = \infty$ for $\eta < 0$ one first can conclude that $\psi(0) = 0$. Second, here $\psi'(0) = 1$ is chosen. In the process the second initial condition is basically arbitrary, because it leads to the same eigenvalues of the energy, and would be set later by the normalization of the wave function. So the specific choice of this value does not matter for this problem, thus it is chosen to be one. Another thing to note here, is that this is probably not the easiest choice for the initial conditions of the numerov algorithm, because one has to first compute the value of $\psi(\Delta t)$, with the step size $\Delta t$ in order to use it (this is done by $\psi(\Delta t) \approx \psi(0) + \psi'(0) \Delta t$), but the derivative at the starting point is the typical choice for an initial condition of an ODE and in this case far more natural and intuitive than to just specify $\psi(\Delta t)$ (It also makes the solution independent of the step size).\\
+  Now, with this choices for the initial conditions, one can solve this ODE with the numerov algorithm (where $k(\eta) = \mathcal{E} - \eta$) and the solution will only depend on $\mathcal{E}$. For that, $\Delta t = 0.001$ and $N = 10000$ are chosen. \\
+
+  \begin{figure}[ht]
+    \input{figures/fig2_1.pgf}
+    \caption{Numerical Solutions of (\ref{eq_schrd}) for $\mathcal{E} = 5$ (blue) and $\mathcal{E} = 6$ (orange) with $\psi(0) = 0$ and $\psi'(0) = 1$ as well as $N = 10000$ and $\Delta t = 0.001$}
+    \label{fig_ex_sols}
+  \end{figure}
+
+  \noindent
+  Two typical solutions with different asymptotic behaviour are shown in Figure \ref{fig_ex_sols}. Generally one gets more \glqq wiggles\grqq{} with an increasing value of $\mathcal{E}$, while the solution is constantly changing its asymptotic behaviour with each.\\
+  From this one can now determine the energy eigenvalues of this equation, at which the solution is normalizable, meaning it does not diverge at $\eta \rightarrow \infty$. One can rephrase this problem by defining a function $\psi_{\lim}(\mathcal{E})$ which returns the value of the solution at $\eta = 10$ (the last $x$-value of the numerical solution, which is not especially large, relatively, but sufficient, because the solution decays exponenially). So to find the eigenvalues of the equation one just has to find the roots of this function. For that purpose the {\tt brentq} method, implemented in {\tt scipy.optimize} is used, which uses brent's method (a combination of the bisection method, the secant method and inverse quadratic interpolation) to determine the roots of a continuous function $f$ in an interval $[a, b]$ which satisfies $f(a) = -f(b)$. For that, the values of $a, b$ for all three cases are determined by trial and error. Such that the solution shows different asymptotic behaviour at $a$ and $b$, and such that the first three eigenvalues (meaning the first three values at which the asymptotic behaviour changes) lay inbetween. This is given by the values $(1, 3), (3, 5)$ and $(5, 6)$. So, with the implemented algorithm one gets the following results for $\mathcal{E}$.
+
+  \begin{center}
+    \begin{tabular}{c | c}
+      n & $\mathcal{E}$ \\
+      \hline
+      1 & 2.33811 \\
+      2 & 4.08795 \\
+      3 & 5.52056 \\
+    \end{tabular}
+    \captionof{table}{First three eigenvalues of the ODE $\ref{eq_schrd}$}
+    \label{table_ev}
+  \end{center}
+
+  \noindent
+  At last, it is to note, that all the digits of $\mathcal{E}$ in table $\ref{table_ev}$ are accurate (and much more in the output of the code), because with the used algorithm it is no effort to compute the eigenvalues accurate in a moderate amount of time.
+
+  \subsubsection*{Source Code}
+  
+
+  \begin{code}
+    \inputminted{python}{numerov.py}
+    \captionof{listing}{numerov.py}
+  \end{code}
+  \begin{code}
+  	\inputminted{python}{problem1.py}
+  	\captionof{listing}{problem1.py}
+  \end{code}
+  \begin{code}
+    \inputminted{python}{problem2a.py}
+    \captionof{listing}{problem2a.py}
+  \end{code}
+  \begin{code}
+    \inputminted{python}{problem2b.py}
+    \captionof{listing}{problem2b.py}
+  \end{code}
 
 \end{document}
