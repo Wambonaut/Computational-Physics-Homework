@@ -27,7 +27,7 @@
   \vspace*{0.5cm}
   \centerline{Jona Ackerschott, Julian Mayr}
   \vspace*{1cm}
-  \centerline{\Large\bfseries Problem set 3}
+  \centerline{\Large\bfseries Problem set 4}
   \vspace*{0.5cm}
 
   \section*{Problem 1}
@@ -70,7 +70,28 @@
 
   \newpage\noindent
   So one gets a pretty reasonable solution with a deviation staying at less than $0.5 \%$, if $\varepsilon > 10^{-5}$.
-
+  \section*{Problem 2}
+  For a tridiagonal Matrix, the Gauss-Jordan-Algorithm simplifies by only having to consider the previous row of the matrix for each row to get to upper triangle form. For matrix rows $y_n$ and $a_n,b_n,c_n$ as given in the sheet, the iteration step for each line reads:
+  \begin{align}
+  	y_n=\frac{y_n-a_n*y_{n-1}}{ b_n-c_{n-1}}
+  \end{align}
+  After Gaussian elimination, the Matrix equation can be solved using backward substitution. For tridiagonal matrices, this also simplifies to
+  \begin{align}
+  	y_n=y_n-y_{n+1}*y_{n,n+1}
+  \end{align}
+  since every row only has two elements. The subroutine "solution\_tridiag" in the program implements these two functions and uses them to calculate the solution vector $x_i$. For the given parameters, it yields:
+  \begin{align}
+  	x=\begin{pmatrix}
+  	0.49999999999999994\\0.8999999999999999\\1.2\\1.4000000000000004\\1.5000000000000004\\1.5000000000000004\\1.4000000000000004\\1.2000000000000002\\0.9\\0.5 
+  	\end{pmatrix}
+  \end{align}
+  Testing the equation with this solution and calculating the error gives
+  \begin{align}
+   \Delta x=\begin{pmatrix}
+  -2.7755575615628914e-17\\-1.3877787807814457e-16\\-3.608224830031759e-16\\3.0531133177191805e-16\\8.326672684688674e-17\\8.326672684688674e-17\\8.326672684688674e-17\\-2.7755575615628914e-17\\-1.3877787807814457e-16\\-2.7755575615628914e-17
+    \end{pmatrix}
+  \end{align}
+  Since 64 bit floating point has an accuracy of roughly 16 digits, this lies in floating point error range and is a totally acceptable error.
   \subsubsection*{Source Code}
   \begin{code}
     \inputminted{python}{linsolve.py}
@@ -80,5 +101,9 @@
     \inputminted{python}{problem1.py}
     \captionof{listing}{problem1.py}
   \end{code}
+	\begin{code}
+		\inputminted{python}{problem2.py}
+		\captionof{listing}{problem2.py}
+	\end{code}
 
 \end{document}
