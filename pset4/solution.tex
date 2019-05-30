@@ -32,8 +32,8 @@
 
   \section*{Problem 1}
 
-
-  By using the gauss-jordan method (with and without pivoting) implemented in {\tt linsolve.py} and, for comparison, LU-decomposition implemented in {\tt scipy.linalg.lu\_factor} and\\ {\tt scipy.linalg.lu\_solve}, on the equation system
+  \section*{Problem 2}
+  By using the Gauss-Jordan method (with and without pivoting) implemented in {\tt linsolve.py} and, for comparison, LU-decomposition implemented in {\tt scipy.linalg.lu\_factor} and\\ {\tt scipy.linalg.lu\_solve}, on the equation system
 
   \begin{align}
     \begin{pmatrix} \varepsilon & 1/2 \\ 1/2 & 1/2 \end{pmatrix}
@@ -49,9 +49,9 @@
     \begin{tabular}{l | c | c | c | c}
                                  & $x$        & $y$       & $b_1$       & $b_2$      \\
       \hline
-      gauss-jordan               & -0.4687500 & 1.0000010 & 0.50000000  & 0.26562548 \\
+      Gauss-Jordan               & -0.4687500 & 1.0000010 & 0.50000000  & 0.26562548 \\
       \hline
-      gauss-jordan with pivoting & -0.5000011 & 1.0000011 & 0.50000006  & 0.25000000 \\
+      Gauss-Jordan with pivoting & -0.5000011 & 1.0000011 & 0.50000006  & 0.25000000 \\
       \hline
       LU-decomposition           & -0.5000011 & 1.0000011 & 0.50000006  & 0.25000000
     \end{tabular}
@@ -59,12 +59,12 @@
   \end{center}
 
   \noindent
-  As one can see, the gauss-jordan method without pivoting loses some accuracy compared to the LU-decomposition while the gauss-jordan method with pivoting does not. By decreasing $\varepsilon$ even further, one cannot observe any loss of accuracy between, or a significant deviation from the exact solution of the latter two methods. However, one gets the following deviation between the gauss-jordan method (without pivoting) and the LU-decomposition method, measured by the norm of the difference between the two solutions relative to the LU-decomposition solution.
+  As one can see, the Gauss-Jordan method without pivoting loses some accuracy compared to the LU-decomposition while the Gauss-Jordan method with pivoting does not. By decreasing $\varepsilon$ even further, one cannot observe any loss of accuracy between, or a significant deviation from the exact solution of the latter two methods. However, one gets the following deviation between the Gauss-Jordan method (without pivoting) and the LU-decomposition method, measured by the norm of the difference between the two solutions relative to the LU-decomposition solution.
 
   \begin{figure}[ht]
     \begin{center}
       \input{figures/fig1_1.pgf}
-      \caption{Deviation of the solutions of (\ref{p1_eqsys}) obtained by the gauss-jordan method (without pivoting) and LU-decomposition, where $\Delta x$ is the difference of the solution vectors and $x$ is the LU-decomposition solution}
+      \caption{Deviation of the solutions of (\ref{p1_eqsys}) obtained by the Gauss-Jordan method (without pivoting) and LU-decomposition, where $\Delta x$ is the difference of the solution vectors and $x$ is the LU-decomposition solution}
     \end{center}
   \end{figure}
 
