@@ -27,7 +27,6 @@ void tred2_c(double **a, int n, double d[],double e[])
 		h=scale=0.0;
 		if (l > 1) {
 			for (k=1;k<=l;k++){
-				printf("%i, %i\n", i,k);
 				scale += fabs(a[i][k]);
 			}
 			if (scale == 0.0){
@@ -35,7 +34,6 @@ void tred2_c(double **a, int n, double d[],double e[])
 			}
 			else {
 				for (k=1;k<=l;k++) {
-					printf("%i,%i\n",i,k);
 					a[i][k] /= scale;
 					h += a[i][k]*a[i][k];
 				}
@@ -196,7 +194,6 @@ static PyObject * tqli(PyObject *self, PyObject *args) {
 		d[i]=(float) PyFloat_AsDouble(PyList_GetItem(pListD,i-1));
 		e[i]=(float) PyFloat_AsDouble(PyList_GetItem(pListE,i-1));
 	}
-	printf("1\n");	
 	
 	float a[n][n];
 	PyObject *pRow;
@@ -206,7 +203,6 @@ static PyObject * tqli(PyObject *self, PyObject *args) {
 		for(int i=1; i<n; i++){
 			pElement = PyList_GetItem(pRow,i-1);
 			a[j][i]=(float) PyFloat_AsDouble(pElement);
-			printf("Element %i, %i: %f\n", j, i,a[j][i]);
 		}
 	}
 	float *a_rows[n];

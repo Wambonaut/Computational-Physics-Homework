@@ -1,0 +1,121 @@
+% !TEX program = lualatex
+% !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%OUTDIR% "%DOC%"
+
+\documentclass[12pt, a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[left=2cm, top=2cm, right=2cm, bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[newfloat, outputdir=out_tex]{minted}
+\usepackage{pgf}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\newcounter{lstNoteCounter}
+\SetupFloatingEnvironment{listing}{name=Source code}
+
+
+\begin{document}
+
+  \centerline{\Huge\scshape Computational physics}
+  \vspace*{0.5cm}
+  \hrule
+  \vspace*{0.5cm}
+  \centerline{Jona Ackerschott, Julian Mayr}
+  \vspace*{1cm}
+  \centerline{\Large\bfseries Problem set 5}
+  \vspace*{0.5cm}
+
+  \section*{Problem 1}
+  	The given C functions were compiled to a python extension for faster prototyping (The extension and its source code will be included). To test, the Matrix
+  	\begin{align}
+  		M=
+  		\begin{pmatrix}
+  		1&0&1&1\\
+  		0&1&0&1\\
+  		1&0&1&0\\
+  		1&1&0&1
+  		\end{pmatrix}
+  	\end{align}
+  	was tridiagonalized and the eigenvalues were calculated.
+  	The tridiagonal matrix is.
+  	\begin{align}
+  	Q=
+  	\begin{pmatrix}
+  	1&0.707&0&0\\
+  	0.707&1&-0.707&0\\
+  	0&-0.707&1&-1.41\\
+  	0&0&-1.41&1
+  	\end{pmatrix}
+  	\end{align}
+  	With $tqli$, we could then calculate the  eigenvectors
+  	\begin{align}
+  		V=
+  		\begin{pmatrix}
+  		0.372&0.372&-0.602&0.602\\
+  		-0.602&-0.602&-0.372&0.372\\
+  		-0.602&0.602&0.372&0.372\\
+  		0.372&-0.372&0.602&0.602
+  		\end{pmatrix}
+  	\end{align}
+  	and eigenvalues
+  	\begin{align}
+  		\lambda_1=0.382, \lambda_2=1.62, \lambda_3=-0.618, \lambda_4=2.618
+  	\end{align}
+  	For the harmonic oscillator, which is just a diagonal matrix, we obviously get the diagonal elements, and for the eigenvectors we get the unit matrix.
+  	\section*{Problem 2}
+  	The perturbed harmonic oscillator is not diagonal anymore, so the Algorithm, especially for high energy states, is actually useful here. Since we exported the C module to python, we were able to calculate $Q^4$ by using numpy.
+  	\\the eigenvalues for $N=15$ are
+  	\begin{align}
+	  	\begin{matrix}
+		  	0.559&1.77&3.139&4.629&6.22\\
+		  	7.901&9.684&11.395&13.144&16.606\\
+		  	16.952&28.073&28.144&53.001&53.033\\
+	  	\end{matrix}
+	\end{align}
+	And for $N=25$
+	\begin{align}
+	  	\begin{matrix}
+	  		0.559&1.77&3.139&4.629&6.22\\
+	  		7.9&9.658&11.487&13.382&15.339\\
+	  		17.352&19.416&21.526&23.774&25.818\\
+	  		27.739&31.958&32.342&42.229&42.325\\
+	  		57.855&57.901&80.765&80.794&114.309\\
+	  		114.329&164.801&164.816&247.803&247.815\\
+	  	\end{matrix}
+  	\end{align}
+  	As expected, the lower Values are hardly affected by higher influence of perturbation through N, while the higher ones are. This can also be seen comparing to the analytical solution to the linearized problem. For this, the Eigenvalues for N=15 are
+  	\begin{align}
+  	\begin{matrix}
+	  	0.575&1.875&3.475&5.375&7.575\\
+	  	10.075&12.875&15.975&19.375&23.075\\
+	  	23.95&27.075&31.375&35.625&35.975
+  	\end{matrix}
+  	\end{align}
+  	which again, as expected, is similar to the computed values for small and way different for high values, which can very well be seen by plotting the maximum eigenvalue difference against N.
+	\begin{figure}
+	\input{fig1.pgf}
+	\caption{Difference between the maximum eigenvalues of linearized and numerically solved oscillator depending on the matrix dimension}
+	\label{fig1}
+	\end{figure}
+
+	\subsubsection*{Source Code}
+	
+	
+	\begin{code}
+		\inputminted{python}{problem2.py}
+		\captionof{listing}{problem2.py}
+	\end{code}
+	\begin{code}
+		\inputminted{python}{C/build/lib.linux-x86_64-3.7/test.py}
+		\captionof{listing}{problem1.py}
+	\end{code}
+	\begin{code}
+		\inputminted{C}{C/tred2.c}
+		\captionof{listing}{num.c}
+	\end{code}
+\end{document}
