@@ -14,6 +14,14 @@
 \usepackage[newfloat, outputdir=out_tex]{minted}
 \usepackage{pgf}
 
+\graphicspath{{figures/}}
+
+\setlength\parindent{0pt}
+
+\newcounter{lstNoteCounter}
+\SetupFloatingEnvironment{listing}{name=Source code}
+
+
 \begin{document}
   \centerline{\Huge\scshape Computational physics}
   \vspace*{0.5cm}
@@ -30,29 +38,51 @@
   Through examination of the population dynamics equation
   \begin{align}
     \frac{{\rm d} N}{{\rm d} t} = r N (1 - N / K) - \frac{B N^2}{A^2+N^2}
-    \label{eq_pop}
+    \label{eq_population_dynamic_de}
   \end{align}
-  one sees immediately, using the dimensions of N (no dimension) and t
-  (seconds) that $[r] = 1/{\rm s}$, $[K] = 1$, $[A] = 1$ and $[B] = 1/s$.
-  So with the definitions $\varrho = r / B$ and $\tau = B t$ one obtains a
-  dimensionless form of (\ref{eq_pop}).
+  one sees immediately, using the dimensions of N (dimension: count, here named C) and t (dimension: time, here named T) that $[r] = \frac{1}{C T}$, $[K] = C$, $[A] = C$ and $[B] = \frac{C}{T}$. So with the definitions $\kappa = \frac{K}{A}$, $\varrho = \frac{A}{B} r$, $\tau = \frac{B}{A} t$ and $n = \frac{N}{A}$ one obtains a dimensionless form of (\ref{eq_population_dynamic_de}).
   \begin{align}
-    \frac{{\rm d} N}{{\rm d} \tau} = \varrho N (1 - N / K)
-      - \frac{N^2}{A^2 + N^2}
+    \frac{{\rm d} n}{{\rm d} \tau} = \varrho n \left(1 - \frac{n}{\kappa} \right)
+      - \frac{n^2}{1 + n^2}
+    \label{eq_population_dynamic_de_dimless}
   \end{align}
-  Although this form already is dimensionless, here, $n = N / A$ is used
-  as the \glqq dimensionless form\grqq{} of $N$, such that
+  From that stationary points can be found by imposing $\frac{{\rm d} n}{{\rm d} \tau} = 0$
   \begin{align}
-    \frac{{\rm d} n}{{\rm d} t} = \varrho n \left(1 - \frac{A}{K} n\right)
-      - \frac{1}{A} \frac{n^2}{1 + n^2}
+    & \varrho n \left(1 - \frac{n}{\kappa} \right)
+      - \frac{n^2}{1 + n^2} = 0 \nonumber \\
+    \Leftrightarrow \ & \varrho n \left(1 - \frac{1}{\kappa} n + n^2
+      - \frac{1}{\kappa} n^3 \right) - n^2 = 0 \nonumber \\
+    \Leftrightarrow \ & n^3 - \kappa n^2
+      + \left(1 + \frac{\kappa}{\varrho}\right) n - \kappa = 0
+    \label{eq_polynom_stationary}
   \end{align}
+  Now while setting $\kappa = 7.5$, one can compute the zeros or rather the stationary points from this equation, for a specific value for $\varrho$, by applying the Mathematica method \texttt{NRoots} on (\ref{eq_polynom_stationary}). For values of $\varrho$ from $-1$ to $1$ this leads to the plot shown in figure \ref{fig_stationary_points}.
 
-  \begin{align}
-    & \varrho n \left(1 - \frac{A}{K} n \right)
-      - \frac{1}{A} \frac{n^2}{1 + n^2} = 0 \nonumber \\
-    \Leftrightarrow \ & \varrho n \left(1 - \frac{A}{K} n + n^2
-    - \frac{A}{K} n^3 \right) - \frac{n^2}{A} = 0 \nonumber \\
-    \Leftrightarrow \ & 
-  \end{align}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig2_1.pdf}
+    \caption{Stationary points of (\ref{eq_population_dynamic_de_dimless}) in dependence of the parameter $\varrho$. If the plot is multivalued there exists more than one solution to (\ref{eq_polynom_stationary})}
+    \label{fig_stationary_points}
+  \end{figure}
+
+  This graph also shows the points at which the number of solution changes from $1$ to $3$ (or rather from $1$ to $2$ to $3$) or reversed.
+
+  The stability of the stationary points can be determined by the sign of the derivative of (\ref{eq_polynom_stationary}) with respect to $n$ at the specific root. The derivative at the respective points can be determined in Mathematica as well and a plot of these derivative for each value of $\varrho$ from -1 to 1 is shown below in figure \ref{fig_stationary_points_stability}.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig2_2.pdf}
+    \caption{Derivative of (\ref{eq_polynom_stationary}) with respect to $n$ at all roots in dependence of $\varrho$. The colors correspond to the colors of the respective roots in figure \ref{fig_stationary_points}.}
+    \label{fig_stationary_points_stability}
+  \end{figure}
+
+  Now one can simplify identify stable points by a negative derivative and unstable points by a positive derivative. This statement holds, because if the derivative at the stationary point is negative, than a small deviation of this point would lead to a sign of $\frac{{\rm d} n}{{\rm d} \tau}$ \glqq in the opposite direction\grqq{} of the deviation, which means that the value will get closer to the stationary point for a later time. Analogous the value will get farther away from the stationary point in such a case, if the derivative is positive. So, one can seamply read off the stability from figure \ref{fig_stationary_points_stability}.
+
+  \begin{figure}
+    \captionsetup{type=listing}
+    \inputminted{mathematica}{problem2_code.txt}
+    \caption{Mathematica input for problem 2}
+  \end{figure}
+  
 
 \end{document}
