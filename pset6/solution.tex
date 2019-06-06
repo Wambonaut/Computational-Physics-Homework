@@ -36,8 +36,14 @@
   \section*{Problem 1}
   Copying the given Mathematica code into our own notebook returns a plot of the numerical solution
   
-  \includepdf[scale=0.7,pages=-,pagecommand=\subsection{]{2body.pdf}
+  \includegraphics[scale=0.6,page=1]{nb1.pdf}
   
+  The function $NDSolve$ creates an object which contains Mathematica's numerical interpretation of the ODE. This object can be evaluated using $Evaluate$, and then plotted using $Plot$, or $ParametricPlot$ for a parametric plot.
+\\This can also be used to solve vector valued differential equations, like the 2-body-problem. This was done in the following notebook:
+
+  \includegraphics[scale=0.6, page=1, trim=0 200 0 0, clip]{2body.pdf}
+
+  The typical 2-Body-Problem Movement can be seen clearly. There is also no euler-like error to be seen, because $NDSolve$ uses a pretty complex combination of ODE solving algorithms. For additional accuracy, $PrecisionGoal$ and $AccuracGoal$ variables can be given, though they are not necessary for this problem.
   \section*{Problem 2}
   Through examination of the population dynamics equation
   \begin{align}
