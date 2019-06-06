@@ -13,6 +13,7 @@
 \usepackage{listings}
 \usepackage[newfloat, outputdir=out_tex]{minted}
 \usepackage{pgf}
+\usepackage{pdfpages}
 
 \begin{document}
   \centerline{\Huge\scshape Computational physics}
@@ -25,7 +26,10 @@
   \vspace*{0.5cm}
 
   \section*{Problem 1}
-
+  Copying the given Mathematica code into our own notebook returns a plot of the numerical solution
+  
+  \includepdf[scale=0.7,pages=-,pagecommand=\subsection{]{2body.pdf}
+  
   \section*{Problem 2}
   Through examination of the population dynamics equation
   \begin{align}
