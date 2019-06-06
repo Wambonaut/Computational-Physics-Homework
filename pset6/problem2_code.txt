@@ -1,0 +1,13 @@
+In[1]:=  kappa=7.5
+
+In[2]:=  p[n_,rho_]:=n^3 - kappa*n^2+(1+kappa/rho)*n-kappa
+
+In[3]:=  R1[rho_]:= NRoots[p[n,rho],n][[1]][[2]]
+         R2[rho_]:= NRoots[p[n,rho],n][[2]][[2]]
+         R3[rho_]:= NRoots[p[n,rho],n][[3]][[2]]
+
+In[4]:=  DN[n_,rho_]:= D[p[m,rho],m] /. m -> n
+
+In[5]:=  Plot[{R1[rho],R2[rho],R3[rho]},{rho,-1,1},PlotRange->{-10,15},ImageSize->Large]
+
+In[6]:=  Plot[{DN[R1[rho],rho],DN[R2[rho],rho],DN[R3[rho],rho]},{rho,-1,1},PlotRange->{-100,100},ImageSize->Large]
