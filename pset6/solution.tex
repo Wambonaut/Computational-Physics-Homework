@@ -68,7 +68,7 @@
   \end{align}
   Now while setting $\kappa = 7.5$, one can compute the zeros or rather the stationary points from this equation, for a specific value for $\varrho$, by applying the Mathematica method \texttt{NRoots} on (\ref{eq_polynom_stationary}). For values of $\varrho$ from $-1$ to $1$ this leads to the plot shown in figure \ref{fig_stationary_points}.
 
-  \begin{figure}
+  \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_1.pdf}
     \caption{Stationary points of (\ref{eq_population_dynamic_de_dimless}) in dependence of the parameter $\varrho$. If the plot is multivalued there exists more than one solution to (\ref{eq_polynom_stationary})}
@@ -79,18 +79,21 @@
 
   The stability of the stationary points can be determined by the sign of the derivative of (\ref{eq_polynom_stationary}) with respect to $n$ at the specific root. The derivative at the respective points can be determined in Mathematica as well and a plot of these derivative for each value of $\varrho$ from -1 to 1 is shown below in figure \ref{fig_stationary_points_stability}.
 
-  \begin{figure}
+  \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_2.pdf}
     \caption{Derivative of (\ref{eq_polynom_stationary}) with respect to $n$ at all roots in dependence of $\varrho$. The colors correspond to the colors of the respective roots in figure \ref{fig_stationary_points}.}
     \label{fig_stationary_points_stability}
   \end{figure}
 
+  \newpage
   Now one can simplify identify stable points by a negative derivative and unstable points by a positive derivative. This statement holds, because if the derivative at the stationary point is negative, than a small deviation of this point would lead to a sign of $\frac{{\rm d} n}{{\rm d} \tau}$ \glqq in the opposite direction\grqq{} of the deviation, which means that the value will get closer to the stationary point for a later time. Analogous the value will get farther away from the stationary point in such a case, if the derivative is positive. So, one can seamply read off the stability from figure \ref{fig_stationary_points_stability}.
-
-  \begin{figure}
+  \vspace{\baselineskip}
+  
+  \begin{figure}[h]
+    \centering
     \captionsetup{type=listing}
-    \inputminted{mathematica}{problem2_code.txt}
+    \inputminted{Mathematica}{problem2.txt}
     \caption{Mathematica input for problem 2}
   \end{figure}
   
