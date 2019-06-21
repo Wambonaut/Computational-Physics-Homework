@@ -1,0 +1,4 @@
+In[1]:= sigma=10; b=8/3;
+In[2]:= P[x_]:=x^3+(1+b+sigma)+b*(sigma+r)*x+2*sigma*b(r-1)
+In[3]:= Zeros=Table[Apply[List,NRoots[P[x]==0,x][[All,2]],{0,1}],{r,1.34561,28,1}]
+In[4]:= Export["zeros.dat",Zeros]
