@@ -1,11 +1,11 @@
 # vs code
-*.vscode
-*__pycache__
+**/.vscode
+**/__pycache__
 
 # Output folders
-*figures
-*out
-*out_tex
+**/figures
+**/out
+**/.texcache
 
 #texstudio stuff
 *.log
