@@ -1,0 +1,100 @@
+% !TEX program = lualatex
+% !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%OUTDIR% "%DOC%"
+
+\documentclass[12pt, a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[left=2cm, top=2cm, right=2cm, bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[newfloat, outputdir=out_tex]{minted}
+\usepackage{pgf}
+
+\graphicspath{{figures/}}
+
+\setlength\parindent{0pt}
+
+\newcounter{lstNoteCounter}
+\SetupFloatingEnvironment{listing}{name=Source code}
+
+\begin{document}
+  \centerline{\Huge\scshape Computational physics}
+  \vspace*{0.5cm}
+  \hrule
+  \vspace*{0.5cm}
+  \centerline{Jona Ackerschott, Julian Mayr}
+  \vspace*{1cm}
+  \centerline{\Large\bfseries Problem set 7}
+  \vspace*{0.5cm}
+
+  \section*{Problem 2}
+  The computation in this problem was, among other things, done with the free computer algebra system \texttt{Maxima}.
+
+  For the fixed points the following conditions must be satisfied.
+  \begin{align}
+    &N_i \left(a_i - \sum_{j=1}^6 b_{ij} P_j \right) = 0 \nonumber \\
+    &P_i \left(\sum_{j=1}^6 c_{ij} N_j - d_i \right) = 0
+    \label{eq_fixed_point_condition}
+  \end{align}
+  These are true, if either $N_i = 0, P_i = 0$ for all $i$, which is the trivial solution, or if the terms in the parenthesis vanish, which is equivalent to
+  \begin{align}
+    &B \vec{P} = \vec{a}, \quad C \vec{N} = \vec{d} \nonumber \\
+    \Leftrightarrow \ &\vec{P} = B^{-1} \vec{a}, \quad \vec{N} = C^{-1} \vec{d}
+    \label{eq_fixed_point_condition_without_trivial}
+  \end{align}
+  where $N = (N_i), P = (P_i), \vec{a} = (a_i)^T, \vec{d} = (d_i)^T, B = (b_{ij}), C = (c_{ij})$ with $\det(B) = 30 \neq 0$ and $\det(C) = -345 \neq 0$ (see source code \ref{code_maxima}).
+
+  From that one gets the fixed point $\vec{N} = (1, 1, 1)^T, \vec{P} = (1, 1, 1)^T$.
+  
+  Some further computation (see source code \ref{code_maxima}) yields the jacobian at this point
+  \begin{align}
+    A = \begin{pmatrix}0 & 0 & 0 & -20 & -30 & -5\\
+      0 & 0 & 0 & -1 & -3 & -7\\
+      0 & 0 & 0 & -4 & -10 & -20\\
+      20 & 30 & 35 & 0 & 0 & 0\\
+      3 & 3 & 3 & 0 & 0 & 0\\
+      7 & 8 & 20 & 0 & 0 & 0\end{pmatrix}
+      \label{eq_jacobian}
+  \end{align}
+  Lastly the eigenvectors $\vec{v}_i$ and eigenvalues $\lambda_i$ were also computed by maxima (see source code \ref{code_maxima}, here only three digits specified)
+  \begin{align}
+    \lambda_1 &= -0.393, \quad
+    \lambda_2 = 0.393, \quad
+    \lambda_3 = -33.6 \ i, \quad
+    \lambda_4 = 33.6 \ i, \quad
+    \lambda_5 = 7.70 \ i, \quad
+    \lambda_6 = -7.70 \ i \nonumber \\
+    \vec{v}_1 &= (1.00, -0.548, -0.140, 3.46, -2.38, 0.493)^T \nonumber \\
+    \vec{v}_2 &= (1.00, -0.548, -0.140, -3.46, 2.38, -0.493)^T \nonumber \\
+    \vec{v}_3 &= (1.00, 0.171, 0.540, 0.00, 1.31 \ i, 0.153 \ i)^T \nonumber \\
+    \vec{v}_4 &= (1.00, 0.171, 0.540, 0.00, -1.31 \ i, -0.153 \ i)^T \nonumber \\
+    \vec{v}_5 &= (1.00, -0.159, -0.393, 0.00, -0.192 \ i, -0.175 \ i)^T \nonumber \\
+    \vec{v}_6 &= (1.00, -0.159, -0.393, 0.00, 0.192 \ i, 0.175 \ i)^T
+  \end{align}
+  and the time evolution for the state $\vec{n} = \sum_{i=1}^6 c_i \vec{v}_i$ with $\vec{c} = (3, 3, 1, 1, 5, 0.1)^T$ (see figure \ref{fig_time_evolution}) was computed using python (see source code \ref{code_python}). From figure \ref{fig_time_evolution} one clearly sees, that the populations get very large after a certain time, so this is an unstable solution.
+
+  \begin{figure}[h]
+    \input{figures/fig1.pgf}
+    \caption{
+      Time evolution of the population dynamics equation with the initial state $\vec{n} = \sum_{i=1}^6 c_i \vec{v}_i$, where $\vec{c} = (3, 3, 1, 1, 5, 0.1)^T$ and $\vec{v}_i$ are the eigenvectors of the jacobian $A$ (see (\ref{eq_jacobian})).
+    }
+    \label{fig_time_evolution}
+  \end{figure}
+
+  \begin{figure}[h]
+    \inputminted{text}{problem2_maxima.txt}
+    \captionof{listing}{Maxima input code for problem 2}
+    \label{code_maxima}
+  \end{figure}
+
+  \begin{figure}[h]
+    \inputminted{python}{problem2.py}
+    \captionof{listing}{Python code for plotting the time evolution}
+    \label{code_python}
+  \end{figure}
+
+\end{document}
